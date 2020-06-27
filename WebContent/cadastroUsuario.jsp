@@ -53,7 +53,7 @@
 		onsubmit="return validarCampos() ? true : false"
 		enctype="multipart/form-data">
 		<ul class="form-style-1">
-		
+		   
 			 <div style="text-align: center;">
 	 					<c:if test="${user.fotoBase64Miniatura.isEmpty() == false}">
 						<a href="salvarUsuario?acao=download&tipo=imagem&id=${user.id}">
@@ -67,7 +67,7 @@
 							title="Imagem" width="45px" height="45px"  onclick="alert('Não possui imagem!')" />
 					</c:if>	
 			</div>
-							<br>		
+		 				<br>		
 		
 			
 			<table>
@@ -303,6 +303,21 @@
 	<br>
 
 
+
+ 
+  <%@ page import="java.util.List" %>
+  <%
+         List<BeansCursoJsp> lista = (List<BeansCursoJsp>) request.getAttribute("usuarios");   
+         if(lista != null){
+             if(lista.size() == 0){
+           	  String script = "<script>alert('Nome não encontrado!')</script>";
+           	    out.print(script);
+            }        	      	 
+         }
+   
+  %>
+
+
 <!-- Formulário de pesquisa -->
 
 
@@ -318,15 +333,6 @@
   </ul>
  </form>
  
- 
-  <%@ page import="java.util.List" %>
-  <%
-         List<BeansCursoJsp> lista = (List<BeansCursoJsp>) request.getAttribute("usuarios");   
-         if(lista.size() == 0){
-        	  String script = "<script>alert('Nome não encontrado!')</script>";
-        	    out.print(script);
-         }    
-  %>
 
 <!-- Lista de clientes -->
 
