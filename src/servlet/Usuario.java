@@ -27,6 +27,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import beans.BeansCursoJsp;
 import dao.DaoUsuario;
+import utilitario.Utilitario;
 
 @WebServlet("/salvarUsuario") // Mapeamento nome que vai como atributo de action="SalvarUsuario"
 @MultipartConfig
@@ -76,7 +77,9 @@ public class Usuario extends HttpServlet {
 			} else if (acao.equalsIgnoreCase("download")) {
 				BeansCursoJsp usuario = daoUsuario.consultar(Long.parseLong(id));
 				if (usuario != null) {
-
+					
+                     /* Inicio Download */
+				
 					String contentType = "";
 					byte[] filebytes = null;
 
@@ -112,7 +115,27 @@ public class Usuario extends HttpServlet {
 					os.flush();
 					os.close();
 					
+				 /*Fim Download */
 					
+					
+					/*DOWNLOAD Utilizando a classe UTILITARIOS
+					
+					Utilitario util = new  Utilitario();
+					String contentType = "";
+					String base64 = "";
+					String tipo = request.getParameter("tipo");
+
+					// Recupera a base64 (converte em bytes) e contentType de imagem ou curriculo
+					if (tipo.equals("imagem")) {
+						contentType = usuario.getContentType();
+						base64 = usuario.getFotoBase64();
+					} else if (tipo.equals("curriculo")) {
+						contentType = usuario.getCurriculoContentType();
+						base64 =  usuario.getCurriculoBase64();
+						
+					}
+					util.download(response, contentType, base64);
+					/* Utilizando UTILITARIOS*/
 					
 				}
 			}
@@ -206,9 +229,25 @@ public class Usuario extends HttpServlet {
 			                  
 					/*Verifica se existe imagem selecionado no formulário*/
 			  		if (imagemFoto != null && imagemFoto.getInputStream().available() > 0) {
-									
-						
+							
 			  			
+			  			/* salvar imagem e miniatura utilizando a classe UTILITARIOS 
+			  					  			
+						Utilitario util = new Utilitario();
+						
+						String fotobase64 = util.convertArquivoPartToBase64(imagemFoto);
+						// Salva arquivo na base 64
+						usuario.setFotoBase64(fotobase64);
+									
+						// Salva o tipo de arquivo
+						usuario.setContentType(imagemFoto.getContentType());	
+
+						usuario.setFotoBase64Miniatura(util.alteraTamanhoDaImagemBase64EConcatena(fotobase64, 100, 100));
+						
+						/* Fim Utilizando UTILITARIOS */
+						
+						
+						
 			  			/* Inicio Imagem original */
 			  			
 			  			// Converte a entrada de fluxo de dados para bytes 
@@ -223,12 +262,12 @@ public class Usuario extends HttpServlet {
 						// Salva o tipo de arquivo
 						usuario.setContentType(imagemFoto.getContentType());	
 						
-						/* Fim Imagem original */
+						// Fim Imagem original 
 						
 						
 						
 						
-						/*Inicio da miniatura*/
+						//*Inicio da miniatura 
 
 					
 						//Transforma em bufferImagem

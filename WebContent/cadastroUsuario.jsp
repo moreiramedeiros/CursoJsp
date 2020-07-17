@@ -233,8 +233,8 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td><input type="submit" value="Salvar"> <input
-						type="submit" value="Cancelar"
+					<td><input type="submit" value="Salvar"> 
+					<input	type="submit" value="Cancelar"
 						onclick="document.getElementById('formUser').action = 'salvarUsuario?acao=reset'">
 					</td>
 				</tr>
